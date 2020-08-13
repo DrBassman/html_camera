@@ -1,0 +1,121 @@
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
+		<script src="fontawesome-free-5.14.0-web/js/all.min.js"></script>
+		<script src="jquery-3.3.1.slim.min.js"></script>
+		<script src="bootstrap.min.js"></script>
+		<title>Capture Portrait</title>
+	</head>
+	<body>
+		<div class="container">
+			<div class="jumbotron">
+				<img class="rounded float-right" src="lol-logo.png" alt="Logo">
+				<h1>Capture Patient Photo</h1>
+				<p>Capture patient photo in portrait format.</p>
+			</div>
+			<p><div id="errorMsg" class="alert alert-danger" style="display:none;"></div></p>
+			<table id="camUI" style="display:none;">
+				<tr>
+					<!-- Stream video via webcam -->
+					<td><video id="video" class="img-thumbnail" playsinline autoplay width="640" height="480"></video></td>
+					<!-- Converted snapshot -->
+					<td style="text-align:right;">Preview: </td>
+					<td><canvas id="c2" class="img-thumbnail" width="360" height="480"></canvas></td>
+				</tr>
+				<tr>
+					<!-- Trigger canvas web API -->
+					<td style="text-align:center;"><button id="snap" class="btn btn-outline-secondary" style="display:none;" tabindex="1" data-togle="tooltip" title="Compose photo using viewfinder, then click here for preview"><i class="fas fa-camera-retro fa-2x"></i></button></td>
+					<td>
+						<div id="initials_div" style="visibility:hidden;">
+						Enter Patient Initials:
+						<input id="initials" type="text" maxlength="3" width="4" oninput="show_save(this);" tabindex="2" data-toggle="tooltip" title="Enter patient initials">
+						</div>
+					</td>
+					<td style="text-align:center;"><a id="save" class="btn btn-outline-primary" download="" href="" onclick="download_img(this);" style="display:none;" tabindex="3" data-toggle="tooltip" title="Click here to save preview"><i class="fas fa-portrait fa-2x"></i></a></td>
+				</tr>
+			</table>
+				<p><div id="fileSaved" class="alert alert-success alert-dismissible" style="display:none;">
+					<button type="button" class="close" data-dismiss="alert">&times;</button>
+					<strong>Success!</strong> Preview has been saved successfully.
+				</div></p>
+				<p><div id="fileName" class="alert alert-info" style="display:none;"></div></p>
+
+			<!-- Webcam video snapshot -->
+			<div id="notShown">
+				<canvas id="canvas" width="640" height="480"></canvas>
+			</div>
+		</div>
+
+		<script>
+			$(document).ready(function(){
+				$('[data-toggle="tooltip"]').tooltip();
+			});
+			// Grab elements, create settings, etc.
+			var video = document.getElementById('video');
+
+			// Get access to the camera!
+			if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+				navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+					video.srcObject = stream;
+					video.play();
+					document.getElementById("snap").style.display="";
+					document.getElementById("camUI").style.display="";
+					document.getElementById("snap").focus();
+				})
+				.catch(function(err) {
+					document.getElementById("errorMsg").style.display = "";
+					document.getElementById("errorMsg").innerHTML = "<h2>Error!</h2> <br>Could not connect to webcam. {" + err + "}";
+				});
+			}
+
+			// Elements for taking the snapshot
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var video = document.getElementById('video');
+			var canvas2 = document.getElementById('c2');
+			var c2 = canvas2.getContext('2d');
+			var initials_div = document.getElementById('initials_div');
+			var sv = document.getElementById('save');
+			var fileName = document.getElementById('fileName');
+			//var notShown = document.getElementById('notShown');
+			//notShown.style.display = "none";
+			canvas.style.display = "none";
+
+			// Trigger photo take
+			document.getElementById("snap").addEventListener("click", function() {
+				// Capture the image at a known resolution...
+				// This routine scales the ENTIRE frame at requested resolution
+				// Thus if aspect ratio is not 4:3, then image gets distorted!
+				context.drawImage(video, 0, 0, 640, 480);// 80, 0, 160, 240, 0, 0, 160, 240);
+				// Crop the image to desired resolution from above...
+				// This routine DOES NOT scale, it just crops, so no distortion!!!
+				c2.drawImage(canvas, 140, 0, 360, 480, 0, 0, 360, 480);
+				initials_div.style.visibility = "visible";
+				document.getElementById('initials').focus();
+			});
+
+			// Download the image...
+			download_img = function(el) {
+				var dt = new Date();
+				var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
+				var initials = document.getElementById('initials');
+				el.download = yr + "-patPhoto-" + initials.value + ".png";
+				var imageURI = canvas2.toDataURL("image/png");
+				el.href = imageURI;
+				document.getElementById("fileSaved").style.display="";
+			};
+
+			// Show the Save As link...
+			show_save = function(el) {
+				var dt = new Date();
+				var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
+				sv.style.display = "";
+				fileName.style.display = "";
+				fileName.innerHTML = "File to be saved as \"" + yr + "-patPhoto-" + initials.value + ".png\"";
+				// Disconnect the callback...
+			};
+		</script>
+	</body>
+</html>
