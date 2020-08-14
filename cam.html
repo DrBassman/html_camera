@@ -13,16 +13,16 @@
 			<div class="jumbotron">
 				<img class="rounded float-right" src="lol-logo.png" alt="Logo">
 				<h1>Capture Patient Photo</h1>
-				<p>Capture patient photo in portrait format.</p>
+				<p>Capture patient photo in portrait (3:4) format.</p>
 			</div>
 			<p><div id="errorMsg" class="alert alert-danger" style="display:none;"></div></p>
 			<table id="camUI" style="display:none;">
 				<tr>
 					<!-- Stream video via webcam -->
-					<td><video id="video" class="img-thumbnail" playsinline autoplay width="640" height="480"></video></td>
+					<td><video id="video" class="img-thumbnail" playsinline autoplay></video></td>
 					<!-- Converted snapshot -->
 					<td style="text-align:right;">Preview: </td>
-					<td><canvas id="c2" class="img-thumbnail" width="360" height="480"></canvas></td>
+					<td><canvas id="c2" class="img-thumbnail"></canvas></td>
 				</tr>
 				<tr>
 					<!-- Trigger canvas web API -->
@@ -44,7 +44,7 @@
 
 			<!-- Webcam video snapshot -->
 			<div id="notShown">
-				<canvas id="canvas" width="640" height="480"></canvas>
+				<canvas id="canvas"></canvas>
 			</div>
 		</div>
 
@@ -54,12 +54,34 @@
 			});
 			// Grab elements, create settings, etc.
 			var video = document.getElementById('video');
-
+			// Elements for taking the snapshot
+			var canvas = document.getElementById('canvas');
+			var context = canvas.getContext('2d');
+			var video = document.getElementById('video');
+			var canvas2 = document.getElementById('c2');
+			var c2 = canvas2.getContext('2d');
+			var initials_div = document.getElementById('initials_div');
+			var sv = document.getElementById('save');
+			var fileName = document.getElementById('fileName');
+			var file_ext="jpg";
+			var file_desc="image/jpeg";
+			var cam_width=640;
+			var cam_height=480;
+			var save_width=(cam_height / 4) * 3;
+			//var notShown = document.getElementById('notShown');
+			//notShown.style.display = "none";
+			canvas.style.display = "none";
 			// Get access to the camera!
 			if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-				navigator.mediaDevices.getUserMedia({ video: true }).then(function(stream) {
+				navigator.mediaDevices.getUserMedia({ video: {width: cam_width, height: cam_height}}).then(function(stream) {
 					video.srcObject = stream;
 					video.play();
+					video.width = cam_width;
+					video.height = cam_height;
+					canvas.width = cam_width;
+					canvas.height = cam_height;
+					canvas2.width = save_width;
+					canvas2.height = cam_height;
 					document.getElementById("snap").style.display="";
 					document.getElementById("camUI").style.display="";
 					document.getElementById("snap").focus();
@@ -70,28 +92,15 @@
 				});
 			}
 
-			// Elements for taking the snapshot
-			var canvas = document.getElementById('canvas');
-			var context = canvas.getContext('2d');
-			var video = document.getElementById('video');
-			var canvas2 = document.getElementById('c2');
-			var c2 = canvas2.getContext('2d');
-			var initials_div = document.getElementById('initials_div');
-			var sv = document.getElementById('save');
-			var fileName = document.getElementById('fileName');
-			//var notShown = document.getElementById('notShown');
-			//notShown.style.display = "none";
-			canvas.style.display = "none";
-
 			// Trigger photo take
 			document.getElementById("snap").addEventListener("click", function() {
 				// Capture the image at a known resolution...
 				// This routine scales the ENTIRE frame at requested resolution
 				// Thus if aspect ratio is not 4:3, then image gets distorted!
-				context.drawImage(video, 0, 0, 640, 480);// 80, 0, 160, 240, 0, 0, 160, 240);
+				context.drawImage(video, 0, 0, cam_width, cam_height);
 				// Crop the image to desired resolution from above...
 				// This routine DOES NOT scale, it just crops, so no distortion!!!
-				c2.drawImage(canvas, 140, 0, 360, 480, 0, 0, 360, 480);
+				c2.drawImage(canvas, ((cam_width - save_width) / 2), 0, save_width, cam_height, 0, 0, save_width, cam_height);
 				initials_div.style.visibility = "visible";
 				document.getElementById('initials').focus();
 			});
@@ -101,8 +110,8 @@
 				var dt = new Date();
 				var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
 				var initials = document.getElementById('initials');
-				el.download = yr + "-patPhoto-" + initials.value + ".png";
-				var imageURI = canvas2.toDataURL("image/png");
+				el.download = save_as();
+				var imageURI = canvas2.toDataURL(file_desc);
 				el.href = imageURI;
 				document.getElementById("fileSaved").style.display="";
 			};
@@ -113,9 +122,16 @@
 				var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
 				sv.style.display = "";
 				fileName.style.display = "";
-				fileName.innerHTML = "File to be saved as \"" + yr + "-patPhoto-" + initials.value + ".png\"";
+				fileName.innerHTML = "File to be saved as \"" + save_as() + "\"";
 				// Disconnect the callback...
 			};
+			
+			function save_as() {
+				var dt = new Date();
+				var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
+				var initials = document.getElementById('initials');
+				return (yr + "-patPhoto-" + initials.value + "." + file_ext);
+			}
 		</script>
 	</body>
 </html>
