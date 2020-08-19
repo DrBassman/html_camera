@@ -5,8 +5,6 @@ $(document).ready(function(){
 var video = document.getElementById('video');
 var vf1 = document.getElementById('vf1');
 var vf1_ctxt = vf1.getContext('2d');
-var vf2 = document.getElementById('vf2');
-var vf2_ctxt = vf2.getContext('2d');
 // Elements for taking the snapshot
 var canvas = document.getElementById('canvas');
 var context = canvas.getContext('2d');
@@ -16,6 +14,7 @@ var c2 = canvas2.getContext('2d');
 var initials_div = document.getElementById('initials_div');
 var sv = document.getElementById('save');
 var fileName = document.getElementById('fileName');
+var vf_cell = document.getElementById('vf_cell');
 var file_ext="jpg";
 var file_desc="image/jpeg";
 var cam_width=640;
@@ -31,22 +30,21 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: {width: cam_width, height: cam_height}}).then(function(stream) {
         video.srcObject = stream;
         video.play();
-        vf1_ctxt.fillStyle = 'red';
-        vf2_ctxt.fillStyle = 'red';
-        vf1_ctxt.fillRect(vf_left, 0, 1, cam_height * 0.05);
-        vf1_ctxt.fillRect(vf_right, 0, 1, cam_height * 0.05);
-        vf2_ctxt.fillRect(vf_left, 0, 1, cam_height * 0.05);
-        vf2_ctxt.fillRect(vf_right, 0, 1, cam_height * 0.05);
-        vf1_ctxt.fillStyle = 'green';
-        vf2_ctxt.fillStyle = 'green';
-        vf1_ctxt.fillRect((cam_width / 2), 0, 1, cam_height * 0.05);
-        vf2_ctxt.fillRect((cam_width / 2), 0, 1, cam_height * 0.05);
+        vf1.style.height = cam_height;
+        vf1.style.width = cam_width;
+        vf1.height = cam_height;
+        vf1.width = cam_width;
+        vf1_ctxt.fillStyle = 'rgba(255, 255, 255, 0.50)';
+        vf1_ctxt.fillRect(0, 0, vf_left, cam_height);
+        vf1_ctxt.fillRect(vf_right, 0, vf_left, cam_height);
         video.width = cam_width;
         video.height = cam_height;
         canvas.width = cam_width;
         canvas.height = cam_height;
         canvas2.width = save_width;
         canvas2.height = cam_height;
+        vf_cell.style.width = cam_width;
+        vf_cell.style.height = cam_height;
         document.getElementById("snap").style.display="";
         document.getElementById("camUI").style.display="";
         document.getElementById("snap").focus();

@@ -19,10 +19,9 @@
 			<table id="camUI" style="display:none;">
 				<tr>
 					<!-- Stream video via webcam -->
-					<td>
-						<canvas id="vf1" width="640" height="24"></canvas>
-						<br><video id="video" class="img-thumbnail" playsinline autoplay width="640" height="480"></video>
-						<br><canvas id="vf2" width="640" height="24"></canvas>
+					<td id="vf_cell" style="position: relative;">
+						<video id="video" class="img-thumbnail" playsinline autoplay width="640" height="480" style="position: absolute; top: 0; left: 0;"></video>
+						<canvas id="vf1" style="position: absolute; top: 0; left: 0;"></canvas>
 					</td>
 					<!-- Converted snapshot -->
 					<td><canvas id="c2" class="img-thumbnail"></canvas></td>
