@@ -68,6 +68,14 @@ document.getElementById("snap").addEventListener("click", function() {
     document.getElementById('initials').focus();
 });
 
+// Take the photo when <Enter> pressed in the initials field...
+document.getElementById("initials").addEventListener("keyup", function(event) {
+    if(event.keyCode === 13) {
+        console.log("Enter Key Pressed");
+        document.getElementById("save").click();
+    }
+});
+
 // Download the image...
 download_img = function(el) {
     var dt = new Date();
