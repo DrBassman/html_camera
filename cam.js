@@ -82,7 +82,7 @@ download_img = function(el) {
     var yr = (dt.getFullYear() * 10000) + ((dt.getMonth() + 1) * 100) + dt.getDate();
     var initials = document.getElementById('initials');
     el.download = save_as();
-    var imageURI = canvas2.toDataURL(file_desc);
+    var imageURI = canvas2.toDataURL(file_desc, 0.98);
     el.href = imageURI;
     document.getElementById("fileSaved").style.display="";
 };
