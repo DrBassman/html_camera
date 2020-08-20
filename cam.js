@@ -34,7 +34,7 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         vf1.style.width = cam_width;
         vf1.height = cam_height;
         vf1.width = cam_width;
-        vf1_ctxt.fillStyle = 'rgba(255, 255, 255, 0.50)';
+        vf1_ctxt.fillStyle = 'rgba(255, 255, 255, 0.80)';
         vf1_ctxt.fillRect(0, 0, vf_left, cam_height);
         vf1_ctxt.fillRect(vf_right, 0, vf_left, cam_height);
         video.width = cam_width;
