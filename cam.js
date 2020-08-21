@@ -30,8 +30,8 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
     navigator.mediaDevices.getUserMedia({ video: {width: cam_width, height: cam_height}}).then(function(stream) {
         video.srcObject = stream;
         video.play();
-        vf1.style.height = cam_height;
-        vf1.style.width = cam_width;
+        vf1.style.height = cam_height + "px";
+        vf1.style.width = cam_width + "px";
         vf1.height = cam_height;
         vf1.width = cam_width;
         vf1_ctxt.fillStyle = 'rgba(255, 255, 255, 0.80)';
@@ -43,8 +43,8 @@ if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         canvas.height = cam_height;
         canvas2.width = save_width;
         canvas2.height = cam_height;
-        vf_cell.style.width = cam_width;
-        vf_cell.style.height = cam_height;
+        vf_cell.style.width = cam_width + "px";
+        vf_cell.style.height = cam_height + "px";
         document.getElementById("snap").style.display="";
         document.getElementById("camUI").style.display="";
         document.getElementById("snap").focus();

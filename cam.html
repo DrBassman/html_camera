@@ -1,20 +1,18 @@
+<!DOCTYPE html>
 <html lang="en" dir="ltr">
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<link rel="stylesheet" type="text/css" href="bootstrap.min.css">
 		<script src="fontawesome-free-5.14.0-web/js/all.min.js"></script>
-		<script src="jquery-3.5.1.min.js"></script>
-		<script src="popper.min.js"></script>
-		<script src="bootstrap.min.js"></script>
 		<title>Capture Portrait</title>
 	</head>
 	<body>
 		<div class="container">
 			<div class="jumbotron">
 				<img class="rounded float-right" src="lol-logo.png" alt="Logo">
-				<h1>Capture Patient Photo</h1>
-				<p>Capture patient photo in portrait (3:4) format.</p>
+				<h1>Capture Portrait</h1>
+				<p>Capture photo in portrait (3:4) format.</p>
 			</div>
 			<p><div id="errorMsg" class="alert alert-danger" style="display:none;"></div></p>
 			<table id="camUI" style="display:none;">
@@ -51,8 +49,9 @@
 				<canvas id="canvas"></canvas>
 			</div>
 		</div>
-
-		<script type="text/javascript" src="cam.js">
-		</script>
+		<script src="jquery-3.5.1.min.js"></script>
+		<script src="popper.min.js"></script>
+		<script src="bootstrap.min.js"></script>
+		<script type="text/javascript" src="cam.js"></script>
 	</body>
 </html>
