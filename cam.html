@@ -14,8 +14,8 @@
 				<h1>Capture Portrait</h1>
 				<p>Capture photo in portrait (3:4) format.</p>
 			</div>
-			<p><div id="errorMsg" class="alert alert-danger" style="display:none;"></div></p>
-			<table id="camUI" style="display:none;" class="table table-borderless">
+			<p><div id="errorMsg" class="alert alert-danger"></div></p>
+			<table id="camUI" class="table table-borderless">
 				<tr>
 					<!-- Stream video via webcam -->
 					<td id="vf_cell" style="position: relative;">
@@ -27,22 +27,22 @@
 				</tr>
 				<tr>
 					<!-- Trigger canvas web API -->
-					<td style="text-align:center;"><button id="snap" class="btn btn-outline-secondary" style="display:none;" tabindex="1" data-togle="tooltip" title="Compose photo using viewfinder, then click here for preview"><i class="fas fa-camera-retro fa-2x"></i></button></td>
+					<td style="text-align:center;"><button id="snap" class="btn btn-outline-secondary" tabindex="1" data-togle="tooltip" title="Compose photo using viewfinder, then click here for preview"><i class="fas fa-camera-retro fa-2x"></i></button></td>
 					<td>
-						<div id="initials_div" style="visibility:hidden;">
+						<div id="initials_div">
 						Enter Patient Initials:
 						<input id="initials" type="text" maxlength="3" width="4" oninput="show_save(this);" tabindex="2" data-toggle="tooltip" title="Enter patient initials">
-						<a id="save" class="btn btn-outline-primary" download="" href="" onclick="download_img(this);" style="display:none;" tabindex="3" data-toggle="tooltip" title="Click here to save preview"><i class="fas fa-portrait fa-2x"></i></a>
+						<a id="save" class="btn btn-outline-primary" download="" href="" onclick="download_img(this);" tabindex="3" data-toggle="tooltip" title="Click here to save preview"><i class="fas fa-portrait fa-2x"></i></a>
 						</div>
 					</td>
 					<td style="text-align:center;"></td>
 				</tr>
 			</table>
-				<p><div id="fileSaved" class="alert alert-success alert-dismissible" style="display:none;">
+				<p><div id="fileSaved" class="alert alert-success alert-dismissible">
 					<button type="button" class="close" data-dismiss="alert">&times;</button>
 					<strong>Success!</strong> Preview has been saved successfully.
 				</div></p>
-				<p><div id="fileName" class="alert alert-info" style="display:none;"></div></p>
+				<p><div id="fileName" class="alert alert-info"></div></p>
 
 			<!-- Webcam video snapshot -->
 			<div id="notShown">
